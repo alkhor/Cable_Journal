@@ -1,0 +1,61 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: inherit;
+    width: 40%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+</style>
+{% include "header.html" %}
+</head>
+<body>
+    <a href="/connections/connections_real_time" style="float: left; width: 70px; height: 30px; background: #5B7D86; border-radius: 5px; border: 1px solid rgba(0,0,0,.4); color: brown; font-family: sans-serif; margin-top: 15px; margin-left: 270px; vertical-align: middle; text-align: center; text-decoration: none; font-size: 15px;" >real_time</a>
+    <a href="/connections/connections_last_time" style="float: right; width: 70px; height: 30px; background: #5B7D86; border-radius: 5px; border: 1px solid rgba(0,0,0,.4); color: brown; font-family: sans-serif; margin-top: 15px; margin-right: 270px; vertical-align: middle; text-align: center; text-decoration: none; font-size: 15px;" >last_time</a>
+<div style="display: inline-block; width: 100%; border-radius: 10">
+<div style="border: solid #2A4150 1px; width: 45%; display: inline-block; float: left; margin-top: 10px; margin-bottom: 10px; margin-left: 30px;">
+    <table style="width: 100%">
+  <tr>
+      <th>№</th>
+      <th>ip</th>
+      <th>mac</th>
+      <th>switch</th>
+      <th>port</th>
+  </tr>
+    {% for i,j in num.items %}
+  <tr>
+    <td> {{ i }} </td> <td> {{ j.0 }} </td> <td> {{ j.1 }} </td> <td> {{ j.3 }} </td> <td> {{ j.2 }} </td>
+  <tr>
+    {% endfor %}
+</table>
+</div>
+<div style="border: solid 1px; width: 45%; display: inline-block; float: right; margin-top: 10px; margin-right: 30px;">
+<table style="width: 100%">
+  <tr>
+      <th>num</th>
+      <th>ip</th>
+      <th>mac</th>
+      <th>switch</th>
+      <th>port</th>
+  </tr>
+    {% for i in num_db %}
+  <tr>
+    <td> {{ i.num }} </td> <td> {{ i.ip }} </td> <td> {{ i.mac }} </td> <td> {{ i.switch }} </td> <td> {{ i.port }} </td>
+  <tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+{% include "footer.html" %}
+</body>
+</html>
