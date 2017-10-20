@@ -10,7 +10,7 @@
     <table id="5" parent="1" name="auth_user"/>
     <table id="6" parent="1" name="auth_user_groups"/>
     <table id="7" parent="1" name="auth_user_user_permissions"/>
-    <table id="8" parent="1" name="connections_discover_data"/>
+    <table id="8" parent="1" name="connections_discoverdata"/>
     <table id="9" parent="1" name="django_admin_log"/>
     <table id="10" parent="1" name="django_content_type"/>
     <table id="11" parent="1" name="django_migrations"/>

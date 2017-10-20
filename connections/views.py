@@ -1,19 +1,15 @@
 from django.shortcuts import render, render_to_response
-import re
-import os
-from . import ping_10
-from connections.models import Discover_data
-
+from connections.models import DiscoverData
 from ipaddress import ip_network
 import os, re, multiprocessing, subprocess, time, pysnmp
 
 # Create your views here.
 def connections(request):
-    num_db = Discover_data.objects.all().values()
+    num_db = DiscoverData.objects.all().values()
     return render(request, 'connections.html', {'num_db': num_db})
 
 def connections_last(request):
-    num_db = Discover_data.objects.all().values()
+    num_db = DiscoverData.objects.all().values()
     return render(request, 'connections.html', {'num_db': num_db})
 
 def connections_real(request):
@@ -72,8 +68,7 @@ def connections_real(request):
         cmdGen = cmdgen.CommandGenerator()
         errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
             cmdgen.CommunityData('public'),
-            cmdgen.UdpTransportTarget(('172.16.5.92', 161)),
-            '.1.3.6.1.2.1.4.22.1.2')
+            cmdgen.UdpTransportTarget(('172.16.5.92', 161)), '.1.3.6.1.2.1.4.22.1.2')
         mac_list = []
         for i in varBinds:
             for ip, mac in i:
@@ -116,7 +111,7 @@ def connections_real(request):
                 c.append(b.prettyPrint())
             port_mac[port] = c
 
-    def port_mac_switch():
+    def port_mac_switch_4():
         c = []
         for port in range(1, 52):
             errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
@@ -134,8 +129,57 @@ def connections_real(request):
                 port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][8:10] + ":" + j[2:][10:12]
         return port_mac
 
+    def port_mac_switch_9():
+        import pysnmp, re
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
+        cmdGen = cmdgen.CommandGenerator()
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
+            cmdgen.CommunityData('public'),
+            cmdgen.UdpTransportTarget(('172.16.5.9', 161)),
+            '1.3.6.1.2.1.17.7.1.2.2.1.2',
+            ignoreNonIncreasingOid=True)
+
+        def mac(getvar):
+            macs = getvar.split('.')
+            i = 0
+            ma = []
+            for x in range(0, 6):
+                maca = macs[i]
+                if len(maca) == 1:
+                    a = hex(int(maca)).replace("x", "")
+                else:
+                    a = hex(int(maca))[2:]
+                ma.append(a)
+                i = i + 1
+            return ma[0] + ":" + ma[1] + ":" + ma[2] + ":" + ma[3] + ":" + ma[4] + ":" + ma[5]
+
+        port_mac = []
+        for i in varBinds:
+            c = []
+            for a, b in i:
+                c.append(b.prettyPrint())
+                c.append(mac(''.join(
+                    re.findall(r'\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}$', a.prettyPrint()))))
+            port_mac.append(c)
+
+        port_mac_9 = {}
+        for j in range(1, 52):
+            c = []
+            for i in port_mac:
+                if str(j) == i[0]:
+                    c.append(i[1])
+            if len(c) > 0:
+                port_mac_9[j] = c
+
+        for i in [i for i in port_mac_9.keys()]:
+            if len(port_mac_9.get(i)) <= 3:
+                pass
+            else:
+                del port_mac_9[i]
+        return port_mac_9
+
     DNULL = open(os.devnull, 'w')
-    success, failed = worker(ip_list('192.168.10.0/23'))
+    success, failed = worker(ip_list('192.168.10.0/24'))
 
     def active_ip_mac_dict():
         ip_mac_dict = get_arp_all()[0]
@@ -143,6 +187,332 @@ def connections_real(request):
         for i in success:
             active_ip_mac[i] = ip_mac_dict[i]
         return active_ip_mac
+
+    def port_mac_switch_13():
+        c = []
+        for port in range(1, 26):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                cmdgen.UdpTransportTarget(('172.16.5.13', 161)),
+                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][8:10] + ":" + j[2:][                                                                                                 10:12]
+        return port_mac
+
+    def port_mac_switch_23():
+        import pysnmp, re
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
+        cmdGen = cmdgen.CommandGenerator()
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
+            cmdgen.CommunityData('public'),
+            cmdgen.UdpTransportTarget(('172.16.5.23', 161)),
+            '1.3.6.1.2.1.17.7.1.2.2.1.2',
+            ignoreNonIncreasingOid=True)
+
+        def mac(getvar):
+            macs = getvar.split('.')
+            i = 0
+            ma = []
+            for x in range(0, 6):
+                maca = macs[i]
+                if len(maca) == 1:
+                    a = hex(int(maca)).replace("x", "")
+                else:
+                    a = hex(int(maca))[2:]
+                ma.append(a)
+                i = i + 1
+            return ma[0] + ":" + ma[1] + ":" + ma[2] + ":" + ma[3] + ":" + ma[4] + ":" + ma[5]
+        port_mac = []
+        for i in varBinds:
+            c = []
+            for a, b in i:
+                c.append(b.prettyPrint())
+                c.append(mac(''.join(
+                    re.findall(r'\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}$', a.prettyPrint()))))
+            port_mac.append(c)
+        port_mac_dict = {}
+        for j in range(1, 52):
+            c = []
+            for i in port_mac:
+                if str(j) == i[0]:
+                    c.append(i[1])
+            if len(c) > 0:
+                port_mac_dict[j] = c
+        for i in [i for i in port_mac_dict.keys()]:
+            if len(port_mac_dict.get(i)) <= 3:
+                pass
+            else:
+                del port_mac_dict[i]
+        return port_mac_dict
+
+    def port_mac_switch_8():
+        import pysnmp, re
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
+        cmdGen = cmdgen.CommandGenerator()
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
+            cmdgen.CommunityData('public'),
+            cmdgen.UdpTransportTarget(('172.16.5.8', 161)),
+            '1.3.6.1.2.1.17.7.1.2.2.1.2',
+            ignoreNonIncreasingOid=True)
+        def mac(getvar):
+            macs = getvar.split('.')
+            i = 0
+            ma = []
+            for x in range(0, 6):
+                maca = macs[i]
+                if len(maca) == 1:
+                    a = hex(int(maca)).replace("x", "")
+                else:
+                    a = hex(int(maca))[2:]
+                ma.append(a)
+                i = i + 1
+            return ma[0] + ":" + ma[1] + ":" + ma[2] + ":" + ma[3] + ":" + ma[4] + ":" + ma[5]
+        port_mac = []
+        for i in varBinds:
+            c = []
+            for a, b in i:
+                c.append(b.prettyPrint())
+                c.append(mac(''.join(
+                    re.findall(r'\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}$', a.prettyPrint()))))
+            port_mac.append(c)
+        port_mac_dict = {}
+        for j in range(1, 52):
+            c = []
+            for i in port_mac:
+                if str(j) == i[0]:
+                    c.append(i[1])
+            if len(c) > 0:
+                port_mac_dict[j] = c
+        for i in [i for i in port_mac_dict.keys()]:
+            if len(port_mac_dict.get(i)) <= 3:
+                pass
+            else:
+                del port_mac_dict[i]
+        return port_mac_dict
+
+    def port_mac_switch_6():
+        c = []
+        for port in range(1, 26):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                cmdgen.UdpTransportTarget(('172.16.5.6', 161)),
+                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][
+                                                                                                          8:10] + ":" + j[
+                                                                                                                        2:][
+                                                                                                                        10:12]
+        return port_mac
+
+    def port_mac_switch_15():
+        c = []
+        for port in range(1, 26):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                cmdgen.UdpTransportTarget(('172.16.5.15', 161)),
+                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][
+                                                                                                          8:10] + ":" + j[
+                                                                                                                        2:][
+                                                                                                                        10:12]
+        return port_mac
+
+    def port_mac_switch_22():
+        import pysnmp, re
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
+        cmdGen = cmdgen.CommandGenerator()
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
+            cmdgen.CommunityData('public'),
+            cmdgen.UdpTransportTarget(('172.16.5.22', 161)),
+            '1.3.6.1.2.1.17.7.1.2.2.1.2',
+            ignoreNonIncreasingOid=True)
+
+        def mac(getvar):
+            macs = getvar.split('.')
+            i = 0
+            ma = []
+            for x in range(0, 6):
+                maca = macs[i]
+                if len(maca) == 1:
+                    a = hex(int(maca)).replace("x", "")
+                else:
+                    a = hex(int(maca))[2:]
+                ma.append(a)
+                i = i + 1
+            return ma[0] + ":" + ma[1] + ":" + ma[2] + ":" + ma[3] + ":" + ma[4] + ":" + ma[5]
+        port_mac = []
+        for i in varBinds:
+            c = []
+            for a, b in i:
+                c.append(b.prettyPrint())
+                c.append(mac(''.join(
+                    re.findall(r'\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}$', a.prettyPrint()))))
+            port_mac.append(c)
+        port_mac_dict = {}
+        for j in range(1, 26):
+            c = []
+            for i in port_mac:
+                if str(j) == i[0]:
+                    c.append(i[1])
+            if len(c) > 0:
+                port_mac_dict[j] = c
+        for i in [i for i in port_mac_dict.keys()]:
+            if len(port_mac_dict.get(i)) <= 3:
+                pass
+            else:
+                del port_mac_dict[i]
+        return port_mac_dict
+
+    def port_mac_switch_3():
+        c = []
+        for port in range(1, 52):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                cmdgen.UdpTransportTarget(('172.16.5.3', 161)),
+                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][
+                                                                                                          8:10] + ":" + j[
+                                                                                                                        2:][
+                                                                                                                        10:12]
+        return port_mac
+
+    def port_mac_switch_11():
+        c = []
+        for port in range(1, 26):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                cmdgen.UdpTransportTarget(('172.16.5.11', 161)),
+                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][
+                                                                                                          8:10] + ":" + j[
+                                                                                                                        2:][
+                                                                                                                        10:12]
+        return port_mac
+
+    def port_mac_switch_100():
+        import pysnmp, re
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
+        cmdGen = cmdgen.CommandGenerator()
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(
+            cmdgen.CommunityData('public'),
+            cmdgen.UdpTransportTarget(('172.16.5.100', 161)),
+            '1.3.6.1.2.1.17.7.1.2.2.1.2',
+            ignoreNonIncreasingOid=True)
+
+        def mac(getvar):
+            macs = getvar.split('.')
+            i = 0
+            ma = []
+            for x in range(0, 6):
+                maca = macs[i]
+                if len(maca) == 1:
+                    a = hex(int(maca)).replace("x", "")
+                else:
+                    a = hex(int(maca))[2:]
+                ma.append(a)
+                i = i + 1
+            return ma[0] + ":" + ma[1] + ":" + ma[2] + ":" + ma[3] + ":" + ma[4] + ":" + ma[5]
+        port_mac = []
+        for i in varBinds:
+            c = []
+            for a, b in i:
+                c.append(b.prettyPrint())
+                c.append(mac(''.join(
+                    re.findall(r'\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3}$', a.prettyPrint()))))
+            port_mac.append(c)
+        port_mac_dict = {}
+        for j in range(1, 26):
+            c = []
+            for i in port_mac:
+                if str(j) == i[0]:
+                    c.append(i[1])
+            if len(c) > 0:
+                port_mac_dict[j] = c
+        for i in [i for i in port_mac_dict.keys()]:
+            if len(port_mac_dict.get(i)) <= 3:
+                pass
+            else:
+                del port_mac_dict[i]
+        return port_mac_dict
+
+    def port_mac_switch_10():
+        c = []
+        for port in range(1, 52):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                                                                                cmdgen.UdpTransportTarget(
+                                                                                    ('172.16.5.10', 161)),
+                                                                                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(
+                                                                                    port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][
+                                                                                                          8:10] + ":" + j[
+                                                                                                                        2:][
+                                                                                                                        10:12]
+        return port_mac
+
+
+    def port_mac_switch_16():
+        c = []
+        for port in range(1, 52):
+            errorIndication, errorStatus, errorIndex, varBinds = cmdGen.nextCmd(cmdgen.CommunityData('public'),
+                                                                                cmdgen.UdpTransportTarget(
+                                                                                    ('172.16.5.16', 161)),
+                                                                                '1.3.6.1.4.1.11.2.14.11.5.1.9.4.2.1.2.' + str(
+                                                                                    port))
+            port_mac_dict(port, varBinds)
+        for i in [i for i in port_mac.keys()]:
+            if len(port_mac.get(i)) <= 3:
+                pass
+            else:
+                del port_mac[i]
+        for i in [i for i in port_mac.keys()]:
+            for j in port_mac.get(i):
+                port_mac[i] = j[2:][0:2] + ":" + j[2:][2:4] + ":" + j[2:][4:6] + ":" + j[2:][6:8] + ":" + j[2:][
+                                                                                                          8:10] + ":" + j[
+                                                                                                                        2:][
+                                                                                                                        10:12]
+        return port_mac
+
 
     all_ip_mac_dict = get_arp_all()[0]
     active_ip_mac_list = []
@@ -152,7 +522,7 @@ def connections_real(request):
         c.append(all_ip_mac_dict.get(i))
         active_ip_mac_list.append(c)
 
-    port_mac = port_mac_switch()
+    port_mac = port_mac_switch_4()
     list_keys = list(port_mac.keys())
     for i in active_ip_mac_list:
         for j in list_keys:
@@ -160,21 +530,119 @@ def connections_real(request):
                 i.append(j)
                 i.append("sstc_805_2")
 
+    port_mac_9 = port_mac_switch_9()
+    list_keys = list(port_mac_9.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_9[j][0]:
+                i.append(j)
+                i.append("sstc_805_1")
+
+    port_mac_13 = port_mac_switch_13()
+    list_keys = list(port_mac_13.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_13[j]:
+                i.append(j)
+                i.append("sstc_705_1")
+
+    port_mac_23 = port_mac_switch_23()
+    list_keys = list(port_mac_23.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_23[j][0]:
+                i.append(j)
+                i.append("sstc_705_2")
+
+    port_mac_8 = port_mac_switch_8()
+    list_keys = list(port_mac_8.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_8[j][0]:
+                i.append(j)
+                i.append("sstc_605_1")
+
+    port_mac_6 = port_mac_switch_6()
+    list_keys = list(port_mac_6.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_6[j]:
+                i.append(j)
+                i.append("sstc_605_2")
+
+    port_mac_15 = port_mac_switch_15()
+    list_keys = list(port_mac_15.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_15[j]:
+                i.append(j)
+                i.append("sstc_505_1")
+
+    port_mac_22 = port_mac_switch_22()
+    list_keys = list(port_mac_22.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_22[j][0]:
+                i.append(j)
+                i.append("sstc_505_2")
+
+    port_mac_3 = port_mac_switch_3()
+    list_keys = list(port_mac_3.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_3[j]:
+                i.append(j)
+                i.append("sstc_505_3")
+
+    port_mac_11 = port_mac_switch_11()
+    list_keys = list(port_mac_11.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_11[j]:
+                i.append(j)
+                i.append("sstc_308_1")
+
+    #print(port_mac_11)
+    #print(active_ip_mac_list)
+
+    port_mac_100 = port_mac_switch_100()
+    list_keys = list(port_mac_100.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_100[j][0]:
+                i.append(j)
+                i.append("sstc_308_2")
+
+    port_mac_10 = port_mac_switch_10()
+    list_keys = list(port_mac_10.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_10[j]:
+                i.append(j)
+                i.append("405G")
+
+    port_mac_16 = port_mac_switch_16()
+    list_keys = list(port_mac_16.keys())
+    for i in active_ip_mac_list:
+        for j in list_keys:
+            if i[-1] == port_mac_16[j]:
+                i.append(j)
+                i.append("405")
+
+
     nums = num(success)
     num = {}
     for i in nums:
         num[i] = active_ip_mac_list[i - 1]
-
-    num_db = Discover_data.objects.all().values()
-
-    for i in range(1, len(Discover_data.objects.values()) + 1):
-        Discover_data.objects.filter(num=i).delete()
-
+    print(num)
+    num_db = DiscoverData.objects.all().values()
+    for i in range(1, len(DiscoverData.objects.values()) + 1):
+        DiscoverData.objects.filter(num=i).delete()
+#   DiscoverData.objects.all().delete()
     for i in range(1,len(num)):
         if len(num.get(i)) == 2:
-            new_Disc = Discover_data(num=i, ip=num.get(i)[0], mac= num.get(i)[1])
+            new_Disc = DiscoverData(num=i, ip=num.get(i)[0], mac= num.get(i)[1])
         else:
-            new_Disc = Discover_data(num=i, ip=num.get(i)[0], mac=num.get(i)[1], port=num.get(i)[2], switch=num.get(i)[3])
+            new_Disc = DiscoverData(num=i, ip=num.get(i)[0], mac=num.get(i)[1], port=num.get(i)[2], switch=num.get(i)[3])
         new_Disc.save()
-
     return render(request, 'connections.html', {'num': num, 'num_db': num_db})

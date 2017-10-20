@@ -18,8 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^home/', include('home.urls')),
     url(r'^topology/', include('topology.urls')),
     url(r'^connections/', include('connections.urls')),
-    url(r'^ping_net_10/', include('connections.urls')),
+    url(r'', include('home.urls')),
 ]

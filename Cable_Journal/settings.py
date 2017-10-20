@@ -25,7 +25,7 @@ SECRET_KEY = 'tjuo2_rjr6)w#cmv5@3-camiu$0$chq28%x)xzh93ia(@7($^='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '172.16.5.120']
 
 
 # Application definition
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'home',
     'topology',
     'connections',
+    'snippets',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
