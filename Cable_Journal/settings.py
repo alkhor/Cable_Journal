@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'home',
     'topology',
     'connections',
-    'snippets',
     'rest_framework',
 ]
 

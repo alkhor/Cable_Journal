@@ -2,27 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68222aa9-2bb3-4953-8e0a-fdbdd17ca743" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/connections/serializers.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/snippets/serializers.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/3.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/5.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/6.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/7.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/8.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/connections/ping_10.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/6ef473f2-2e0b-4c8e-9b62-22d943969e64.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef473f2-2e0b-4c8e-9b62-22d943969e64.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/admin.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/apps.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/migrations/0001_initial.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/migrations/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/models.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/serializers.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/tests.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/snippets/views.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cable_Journal/settings.py" afterPath="$PROJECT_DIR$/Cable_Journal/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cable_Journal/urls.py" afterPath="$PROJECT_DIR$/Cable_Journal/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connections/models.py" afterPath="$PROJECT_DIR$/connections/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connections/views.py" afterPath="$PROJECT_DIR$/connections/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/header.html" afterPath="$PROJECT_DIR$/templates/header.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home.html" afterPath="$PROJECT_DIR$/templates/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/topology.html" afterPath="$PROJECT_DIR$/templates/topology.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/topology/static/style_f.css" afterPath="$PROJECT_DIR$/topology/static/style_f.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/topology/urls.py" afterPath="$PROJECT_DIR$/topology/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/topology/views.py" afterPath="$PROJECT_DIR$/topology/views.py" />
     </list>
     <ignored path="Cable_Journal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,7 +43,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/connections/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="227">
@@ -78,36 +67,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Cable_Journal/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+            <state relative-caret-position="284">
+              <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/snippets/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/snippets/serializers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -163,12 +128,12 @@
         <option value="$PROJECT_DIR$/templates/5.html" />
         <option value="$PROJECT_DIR$/templates/header.html" />
         <option value="$PROJECT_DIR$/templates/topology.html" />
-        <option value="$PROJECT_DIR$/Cable_Journal/settings.py" />
         <option value="$PROJECT_DIR$/snippets/models.py" />
         <option value="$PROJECT_DIR$/snippets/serializers.py" />
         <option value="$PROJECT_DIR$/connections/views.py" />
         <option value="$PROJECT_DIR$/connections/models.py" />
         <option value="$PROJECT_DIR$/connections/serializers.py" />
+        <option value="$PROJECT_DIR$/Cable_Journal/settings.py" />
       </list>
     </option>
   </component>
@@ -224,34 +189,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Cable_Journal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cable_Journal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cable_Journal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="snippets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cable_Journal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Cable_Journal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="connections" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -584,7 +521,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="5" y="23" width="779" height="973" extended-state="1" />
+    <frame x="5" y="23" width="779" height="973" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31343284" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1000,21 +937,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cable_Journal/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/snippets/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1022,9 +949,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1053,6 +978,14 @@
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cable_Journal/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
